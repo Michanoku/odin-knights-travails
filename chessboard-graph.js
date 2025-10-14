@@ -85,6 +85,7 @@ class Chessboard {
       }
       return false;
     }
+    let counter = 0;
     validMoves.forEach(move => {
       // Calculate the edge vertex x and y based on moves
       const edgeX = square.x + move[0];
@@ -93,8 +94,10 @@ class Chessboard {
       if (checkCoord(edgeX) && checkCoord(edgeY)) {
         const toAdd = boardArray[edgeX][edgeY];
         square.addEdge(toAdd);
+        counter++;
       }
     });
+    console.log(`${counter} edges added!`);
   }
 
   logEdges() {
@@ -118,14 +121,12 @@ class Chessboard {
   }
 
   knightMoves(start, goal) {
-    const toCheckArray = new Array();
-    const visitedArray = new Array();
-
     const startSquare = this.squares[start[0]][start[1]];
     const goalSquare = this.squares[goal[0]][goal[1]];
-
-    console.log(startSquare);
-    console.log(goalSquare);
+    const solutions = new Array();
+    
+    // Recursive Steps I don't understand go here
+    return solutions;
   }
 }
 
