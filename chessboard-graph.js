@@ -116,6 +116,17 @@ class Chessboard {
     }
     return edgesArray;
   }
+
+  knightMoves(start, goal) {
+    const toCheckArray = new Array();
+    const visitedArray = new Array();
+
+    const startSquare = this.squares[start[0], start[1]];
+    const goalSquare = this.squares[goal[0], goal[1]];
+
+    console.log(startSquare);
+    console.log(goalSquare);
+  }
 }
 
 export { Chessboard }
