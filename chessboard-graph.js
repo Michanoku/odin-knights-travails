@@ -44,3 +44,23 @@ class Square {
     }
   }
 }
+
+class Chessboard {
+  constructor(){
+    this.vertices = this.createBoard();
+  }
+
+  createBoard() {
+    const boardArray = new Array(8);
+    for (let i = 0; i < 8; i++) {
+      boardArray[i] = new Array(8);
+      for (let j = 0; j < 8; j++) {
+        boardArray[i][j] = new Square(i, j);
+      }
+    }
+  }
+
+  addEdge() {
+    //-2, -1 | -1, -2  | -2, +1  | -1, +2| +1, -2  | +2, -1  | +1, +2| +2, +1
+  }
+}
