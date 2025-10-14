@@ -118,22 +118,34 @@ class Chessboard {
   }
 
   knightMoves(start, goal) {
-    /* 
-      Save starting square
-      Create empty queue
-      Create empty array for visited squares
-
-      Start traversing:
-        Add starting square to queue
-        Mark it as visited
-
-      While the queue is not empty:
-        Dequeue square from start of queue to visit it
-        For each unvisited edge:
-          Check if edge leads to goal
-          Mark edge as visited
-          Enqueue the edge
-    */
+    // Save starting square
+    const startSquare = this.squares[start[0]][start[1]];
+    // Save goal square
+    const goalSquare = this.squares[goal[0]][goal[1]];
+    // Create empty queue
+    const queue = new Array();
+    // Create empty array for visited squares
+    const visited = new Array();
+    // Add starting square to queue
+    queue.push(startSquare);
+    // Mark it as visited
+    visited.push(`${startSquare.x},${startSquare.y}`);
+    
+    // While the queue is not empty:
+    while (queue.length > 0) {
+      // Dequeue square from start of queue to visit it
+      const square = queue.shift();
+      // For each unvisited edge:
+      for (const edge of square.edges) {
+        const coordString = `${edge.x},${edge.y}`;
+        if (!visited.includes(coordString)) {
+          // Mark edge as visited
+          visited.push(coordString);
+          // Enqueue the edge
+          queue.push(edge);
+        }     
+      }
+    }
   }
 }
 
