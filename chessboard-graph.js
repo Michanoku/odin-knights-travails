@@ -58,9 +58,38 @@ class Chessboard {
         boardArray[i][j] = new Square(i, j);
       }
     }
+    // Add edges here
+    return boardArray;
   }
 
-  addEdge() {
-    //-2, -1 | -1, -2  | -2, +1  | -1, +2| +1, -2  | +2, -1  | +1, +2| +2, +1
+  addEdges(square, boardArray) {
+    //-2, -1 | -2, +1  | -1, -2  | -1, +2| +1, -2  | +1, +2| +2, -1  | +2, +1
+    // i = 2 and j = 1:
+    // -i -j, -i + j, +i -j, +i +j,
+    // -j -i, -j + i, +j -i, +j +i, 
+    const validMoves = [
+      [2, 1], [2, -1],
+      [1, 2], [1, -2],
+      [-1, 2], [-1, -2],
+      [-2, 1], [-2, -1]
+    ];
+
+    // Check the coordinate for invalid values
+    function checkCoord(coord) {
+      if (coord >= 0 && coord <= 7) {
+        return true;
+      }
+      return false;
+    }
+    validMoves.forEach(move => {
+      // Calculate the edge vertex x and y based on moves
+      const edgeX = move[0] + square.x;
+      const edgeY = move[1] + square.y;
+      // If the coordinates check out, add the square to edges
+      if (checkCoord(edgeX) && checkCoord(edgeY)) {
+        const toAdd = boardArray[edgeX][edgeY];
+        square.addEdge(toAdd);
+      }
+    });
   }
 }
