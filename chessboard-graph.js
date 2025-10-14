@@ -11,10 +11,10 @@
 
 class Square {
   // Construct the square class with its location coordinates and empty array for edges
-  constructur(x, y, edges = new Array()) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.edges = edges; 
+    this.edges = new Array(); 
   }
 
   // Check validity of the edge to be added by calculating from coordinates
@@ -47,7 +47,7 @@ class Square {
 
 class Chessboard {
   constructor(){
-    this.vertices = this.createBoard();
+    this.squares = this.createBoard();
   }
 
   createBoard() {
@@ -58,7 +58,11 @@ class Chessboard {
         boardArray[i][j] = new Square(i, j);
       }
     }
-    // Add edges here
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        this.addEdges(boardArray[i][j], boardArray)
+      }
+    }
     return boardArray;
   }
 
@@ -83,8 +87,8 @@ class Chessboard {
     }
     validMoves.forEach(move => {
       // Calculate the edge vertex x and y based on moves
-      const edgeX = move[0] + square.x;
-      const edgeY = move[1] + square.y;
+      const edgeX = square.x + move[0];
+      const edgeY = square.y + move[1];
       // If the coordinates check out, add the square to edges
       if (checkCoord(edgeX) && checkCoord(edgeY)) {
         const toAdd = boardArray[edgeX][edgeY];
@@ -92,4 +96,26 @@ class Chessboard {
       }
     });
   }
+
+  logEdges() {
+    // Log an array of all edges coordinates
+    const edgesArray = new Array();
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        const square = this.squares[i][j];
+        square.edges.forEach(edge => {
+          // Create both moves between the squares as strings
+          const move = `[${square.x},${square.y} -> ${edge.x},${edge.y}]`;
+          const moveBackwards = `[${edge.x},${edge.y} -> ${square.x},${square.y}]`;
+          // If the move had not been added, push it now
+          if (!edgesArray.includes(move) && !edgesArray.includes(moveBackwards)) {
+            edgesArray.push(move);
+          }
+        });
+      }
+    }
+    return edgesArray;
+  }
 }
+
+export { Chessboard }
