@@ -7,5 +7,5 @@ const edges = board.logEdges();
 //console.log(edges.length); // 168 unique moves (in both directions from squares)
 
 const solutions = board.knightMoves([3,3],[4,3]);
-
+console.log(solutions);
 console.log(solutions.length);
