@@ -11,13 +11,42 @@
 
 class Square {
   // Construct the square class with its location coordinates and empty array for edges
-  constructur(coord, edges = new Array()) {
-    this.coord = coord;
+  constructur(x, y, edges = new Array()) {
+    this.x = x;
+    this.y = y;
     this.edges = edges; 
+  }
+
+  // Check validity of the edge to be added by calculating from coordinates
+  checkValidity(x, y) {
+    // If the square is too far away (if any coordinate exceeds -2/+2)
+    if (x > this.x + 2 || x < this.x - 2 || y > this.y + 2 || y < this.y - 2) {
+      throw new Error("Invalid edge. Too far.");
+    }
+    // If the square is not reachable by the knights moves
+    if (Math.abs(x - this.x) === 2 && (Math.abs(y - this.y) !== 1)) {
+      throw new Error("Invalid edge. Not a valid move.");
+    }
+    if (Math.abs(y - this.y) === 2 && (Math.abs(x - this.x) !== 1)) {
+      throw new Error("Invalid edge. Not a valid move.")
+    }
+    if (Math.abs(x - this.x) === 1 && (Math.abs(y - this.y) !== 2)) {
+      throw new Error("Invalid edge. Not a valid move.");
+    }
+    if (Math.abs(y - this.y) === 1 && (Math.abs(x - this.x) !== 2)) {
+      throw new Error("Invalid edge. Not a valid move.")
+    }
   }
 
   // Add an edge by adding a square object to the edges array
   addEdge(square) {
-    this.edges.push(square);
+    // Try adding the square but check its validity first
+    try {
+      this.checkValidity(square.x, square.y)
+      // Add the square to edges
+      this.edges.push(square);
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 }
