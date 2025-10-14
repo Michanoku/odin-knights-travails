@@ -19,22 +19,16 @@ class Square {
 
   // Check validity of the edge to be added by calculating from coordinates
   checkValidity(x, y) {
+    // Calculate difference between this.x/y and x/y
+    const diffX = Math.abs(x - this.x)
+    const diffY = Math.abs(y - this.y)
     // If the square is too far away (if any coordinate exceeds -2/+2)
-    if (x > this.x + 2 || x < this.x - 2 || y > this.y + 2 || y < this.y - 2) {
+    if (diffX > 2 || diffY > 2) {
       throw new Error("Invalid edge. Too far.");
     }
     // If the square is not reachable by the knights moves
-    if (Math.abs(x - this.x) === 2 && (Math.abs(y - this.y) !== 1)) {
+    if (!((diffX === 2 && diffY === 1) || (diffX === 1 && diffY === 2))) {
       throw new Error("Invalid edge. Not a valid move.");
-    }
-    if (Math.abs(y - this.y) === 2 && (Math.abs(x - this.x) !== 1)) {
-      throw new Error("Invalid edge. Not a valid move.")
-    }
-    if (Math.abs(x - this.x) === 1 && (Math.abs(y - this.y) !== 2)) {
-      throw new Error("Invalid edge. Not a valid move.");
-    }
-    if (Math.abs(y - this.y) === 1 && (Math.abs(x - this.x) !== 2)) {
-      throw new Error("Invalid edge. Not a valid move.")
     }
   }
 
