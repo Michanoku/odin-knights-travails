@@ -118,31 +118,22 @@ class Chessboard {
   }
 
   knightMoves(start, goal) {
-    const startSquare = this.squares[start[0]][start[1]];
-    const goalSquare = this.squares[goal[0]][goal[1]];
-    const queue = [startSquare];
-    const path = new Array();
-    let found = false;
-    while (queue.length > 0) {
-      if (found === true) {
-        break;
-      }
-      const square = queue.shift();
-      path.push(`[${square.x}, ${square.y}]`);
-      for (const edge of square.edges) {
-        // Add additional checks here
-        if (edge === goalSquare) {
-          console.log("FOUND IT!");
-          found = true;
-          break;
-        } else if (!path.includes(`[${edge.x}, ${edge.y}]`)) {
-          // Calculate the best one to try here for example: which x and y is closest
-          
-          queue.push(edge);
-        };
-      };
-    }
-    return path;
+    /* 
+      Save starting square
+      Create empty queue
+      Create empty array for visited squares
+
+      Start traversing:
+        Add starting square to queue
+        Mark it as visited
+
+      While the queue is not empty:
+        Dequeue square from start of queue to visit it
+        For each unvisited edge:
+          Check if edge leads to goal
+          Mark edge as visited
+          Enqueue the edge
+    */
   }
 }
 
