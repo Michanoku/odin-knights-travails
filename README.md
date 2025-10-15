@@ -16,7 +16,7 @@ It builds a graph representation of the board, where each square is a vertex con
 
 - **Breadth-First Search**
   - Ensures the knight’s route found is always the shortest possible path.
-  - Prevents re-visiting squares by tracking visited nodes.
+  - Prevents re-visiting squares by tracking visited squares.
 
 - **Path Reconstruction**
   - The algorithm keeps a record of each square’s parent to retrace the exact path from goal back to start.
@@ -98,7 +98,7 @@ In the end, I had to search articles and descriptions of how to implement BFS on
 The description helped me put together pseudocode that explained the algorithm and I 
 was finally able to implement a BFS traversal. This [article](https://www.geeksforgeeks.org/dsa/breadth-first-search-or-bfs-for-a-graph/) helped me a lot, but I also read several others.
 
-With the traversal implemented, I could find the note, but I couldn't understand how to get the 
+With the traversal implemented, I could find the square, but I couldn't understand how to get the 
 shortest route. When looking for answers, I found that the best possible solution would be to log 
 the parents of each location visited so that I could find my way back from the goal to the start.
 
