@@ -1,14 +1,4 @@
-// Graph that has a vertex for each square on a chessboard ( from 0,0 to 7,7)
-// A field is traversible by the Knight if its either +-1,+-2 or +-2,+-1 away.
-// Examples: From 3,3 -> 
-// 1, 2   | 2, 1    | 1, 4    | 2, 5  | 4, 1    | 5, 2    | 4, 5  | 5, 4
-// -2, -1 | -1, -2  | -2, +1  | -1, +2| +1, -2  | +2, -1  | +1, +2| +2, +1
-
-// Things to consider: How to represent a vertex class? What values?
-// location? are the edges saved as an array on the vertex? or are edges
-// saved within a different class? 
-// If using a matrix, 8*8 fields on a chessboard would mean a 64*64 matrix 
-
+// Square class used for vertices
 class Square {
   // Construct the square class with its location coordinates and empty array for edges
   constructor(x, y) {
@@ -45,19 +35,25 @@ class Square {
   }
 }
 
+// The class that saves all the squares in a board and has functions to traverse
 class Chessboard {
   constructor(){
     this.squares = this.createBoard();
   }
 
+  // Creation of the board
   createBoard() {
+    // The overall array of the board (also considered the rows)
     const boardArray = new Array(8);
     for (let i = 0; i < 8; i++) {
+      // Create the column array of the current row
       boardArray[i] = new Array(8);
+      // Add a new square for each item in the array
       for (let j = 0; j < 8; j++) {
         boardArray[i][j] = new Square(i, j);
       }
     }
+    // Traverse the created matrix and add all possible edges to squares
     for (let i = 0; i < 8; i++) {
       for (let j = 0; j < 8; j++) {
         this.addEdges(boardArray[i][j], boardArray)
@@ -67,10 +63,7 @@ class Chessboard {
   }
 
   addEdges(square, boardArray) {
-    //-2, -1 | -2, +1  | -1, -2  | -1, +2| +1, -2  | +1, +2| +2, -1  | +2, +1
-    // i = 2 and j = 1:
-    // -i -j, -i + j, +i -j, +i +j,
-    // -j -i, -j + i, +j -i, +j +i, 
+    // -2, -1 | -2, +1  | -1, -2  | -1, +2| +1, -2  | +1, +2| +2, -1  | +2, +1
     const validMoves = [
       [2, 1], [2, -1],
       [1, 2], [1, -2],
@@ -85,6 +78,7 @@ class Chessboard {
       }
       return false;
     }
+    // Add each valid move as an edge
     validMoves.forEach(move => {
       // Calculate the edge vertex x and y based on moves
       const edgeX = square.x + move[0];
@@ -125,26 +119,58 @@ class Chessboard {
     // Create empty queue
     const queue = new Array();
     // Create empty array for visited squares
-    const visited = new Array();
+    const visited = new Object();
     // Add starting square to queue
     queue.push(startSquare);
-    // Mark it as visited
-    visited.push(`${startSquare.x},${startSquare.y}`);
-    
+    // Get the string
+    const startString = getCoordString(startSquare)
+    // Mark it as visited (it has no parent so the value is null)
+    visited[startString] = null;
+
     // While the queue is not empty:
     while (queue.length > 0) {
       // Dequeue square from start of queue to visit it
       const square = queue.shift();
+      const squareString = getCoordString(square);
       // For each unvisited edge:
       for (const edge of square.edges) {
-        const coordString = `${edge.x},${edge.y}`;
-        if (!visited.includes(coordString)) {
+        const coordString = getCoordString(edge);
+        if (!(coordString in visited)) {
           // Mark edge as visited
-          visited.push(coordString);
+          visited[coordString] = squareString;
+          // If this edge is the goal, enter final results calculation
+          if (edge === goalSquare) {
+            // Get the path to the start from the edge using visited 
+            const path = shortestPath(coordString, new Array());
+            // Show results and end
+            console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
+            for (const coord of path) {
+              console.log(coord);
+            }
+            return;
+          }
           // Enqueue the edge
           queue.push(edge);
         }     
       }
+    }
+  
+    // The function to find the shortest path at the end
+    function shortestPath(squareString, path) {
+      // Since we are retracing steps, add the current coordinate at the start
+      path.unshift(squareString);
+      // If the current coordinate has no parent, this is the end, return path
+      if (visited[squareString] === null) {
+        return path;
+      }
+      // Otherwise find parent in the visited object and call recursion
+      const parent = visited[squareString];
+      return shortestPath(parent, path);
+    }
+
+    // Get a string of the squares coordinates
+    function getCoordString(square) {
+      return `[${square.x},${square.y}]`;
     }
   }
 }
